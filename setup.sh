@@ -8,7 +8,7 @@
 
 UCR_SIM_HOME="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 export UCR_SIM_HOME
-export EIC_SIM_UCR=/star/u/kabir/pwg/eSimUCR
+export EIC_SIM_UCR=/gpfs/mnt/gpfs01/star/pwg/kabir/eSimUCR/
 
 export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$EIC_SIM_UCR/pythia8/lib:$EIC_SIM_UCR/eSimUCR/fastjet/lib:$UCR_SIM_HOME/lib/
 export PYTHIA8=$EIC_SIM_UCR/pythia8/

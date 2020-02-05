@@ -17,7 +17,7 @@ else
 endif
 
 setenv UCR_SIM_HOME "$UCR_SIM_HOME"
-setenv EIC_SIM_UCR "/star/u/kabir/pwg/eSimUCR/"
+setenv EIC_SIM_UCR "/gpfs/mnt/gpfs01/star/pwg/kabir/eSimUCR/"
 
 if (!($?LD_LIBRARY_PATH)) then
     setenv LD_LIBRARY_PATH "${EIC_SIM_UCR}/pythia8/lib:${EIC_SIM_UCR}/eSimUCR/fastjet/lib:${UCR_SIM_HOME}/lib/"
