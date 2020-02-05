@@ -22,9 +22,9 @@ source setup.csh
 
 Currently the following packages are included:
 
-- ROOT 6
-- Pythia 8
-- Fastjet3
+- `ROOT 6`
+- `Pythia 8`
+- `FastJet3`
 
 3.Compilation and Execution
 ------------------------
@@ -43,7 +43,7 @@ This should produce an output called `pytree.root` in the current directory. Mak
 --------------------
 If you want to modify or write new functions to generate events that fit your requirements, you can follow the following recipe:
 
-- Modify ElecJetKin.cxx or write a new one with `.cxx` extension and a corresponding header file `.h`.
+- Modify `ElecJetKin.cxx` or write a new one with `.cxx` extension and a corresponding header file `.h`.
 - Add an entry to `LinkDef.h` if it's a new file. No chage to the makefile is necessary.
 - Compile with: `make clean && make`
 - Star `root` and call your function from the `root` prompt.
