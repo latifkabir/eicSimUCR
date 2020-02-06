@@ -12,7 +12,7 @@ git clone https://github.com/latifkabir/eicSimUCR.git
 2.Setup / Sourcing
 --------------------
 
-The main purpose of this common setup is to have a single installation of all dependencies (Pythia or other generators, FastJet, Geant4 etc ..) on BNL or JLab machine which anyone can use without going thorugh the pain of installing them individually. The following sourcing achieves this goal. 
+- The main purpose of this common setup is to have a single installation of all dependencies (Pythia or other generators, FastJet, Geant4 etc ..) on BNL or JLab machine which anyone can use without going thorugh the pain of installing them individually. The following sourcing achieves this goal. 
 
 ```
 cd eicSimUCR/
@@ -28,7 +28,7 @@ Currently the following packages are included:
 
 3.Compilation and Execution
 ------------------------
-To compile use
+- To compile use
 ```
 make
 ```
@@ -51,7 +51,7 @@ If you want to modify or write new functions to generate events that fit your re
 
 5.Updating The Package/Setup
 --------------------------------
-It is expected that the setup or packages will eveolve very rapidly as we work on it. You can update to the lastest version using the following commands from your `eicSimUCR/` directory:
+- It is expected that the setup or packages will eveolve very rapidly as we work on it. You can update to the lastest version using the following commands from your `eicSimUCR/` directory:
 
 ```
 git pull
