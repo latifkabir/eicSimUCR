@@ -26,6 +26,7 @@ Currently, the following packages are included:
 - `Pythia 8`
 - `FastJet3`
 - `EIC-Smear`
+- `HepMC2`
 
 On RCF, these packages are installed at `/gpfs/mnt/gpfs01/star/pwg/kabir/eSimUCR/`.
 
@@ -38,9 +39,14 @@ make
 - To run the example, Start `root` and call the function `ElecJetKin()` from the `root` prompt:
 ```
 root
-[0] ElecJetKin()
+root[0] ElecJetKin()
 ```
 This should produce an output called `pytree.root` in the current directory. Make plots using the output root file.
+
+For a complete list of implemeted functions and short descrition type:
+```
+root[1] help()
+```
 
 4.Making Changes
 --------------------
