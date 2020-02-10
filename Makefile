@@ -11,9 +11,9 @@ endif
 ROOTCINT  = rootcint
 ROOTFLAGS = $(shell root-config --cflags)
 ROOTLIBS  = $(shell root-config --glibs)
-CXXFLAGS  += -fPIC -std=c++11 -L ${EIC_SIM_UCR}/pythia8/lib -lpythia8 -L ${EIC_SIM_UCR}/fastjet/lib -lfastjet
+CXXFLAGS  += -fPIC -std=c++11 -L ${EIC_SIM_UCR}/pythia8/lib -lpythia8 -L ${EIC_SIM_UCR}/fastjet/lib -lfastjet -L ${EIC_SIM_UCR}/HepMC2/lib -lHepMC -lHepMCfio -L${EIC_SIM_UCR}/eic-smear/build/lib -leicsmear
 
-LIB_INCLUDE  = -I${EIC_SIM_UCR}/root6/include -I${EIC_SIM_UCR}/pythia8/include -I${EIC_SIM_UCR}/fastjet/include
+LIB_INCLUDE  = -I${EIC_SIM_UCR}/root6/include -I${EIC_SIM_UCR}/pythia8/include -I${EIC_SIM_UCR}/fastjet/include -I${EIC_SIM_UCR}/HepMC2/include -I${EIC_SIM_UCR}/eic-smear/include
 
 all: libeicSimUCR
 

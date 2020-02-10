@@ -3,3 +3,5 @@
 *.so
 *.pcm
 *_Dict.cxx
+*.dat
+*.txt

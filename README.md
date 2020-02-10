@@ -20,11 +20,14 @@ source setup.csh
 ```
 **Note:** You need to do `source setup.csh` for any new terminal session to comile or use it unless you add it to your `.cshrc` or `.bashrc` file.
 
-Currently the following packages are included:
+Currently, the following packages are included:
 
 - `ROOT 6`
 - `Pythia 8`
 - `FastJet3`
+- `EIC-Smear`
+
+On RCF, these packages are installed at `/gpfs/mnt/gpfs01/star/pwg/kabir/eSimUCR/`.
 
 3.Compilation and Execution
 ------------------------
@@ -51,7 +54,7 @@ If you want to modify or write new functions to generate events that fit your re
 
 5.Updating The Package/Setup
 --------------------------------
-- It is expected that the setup or packages will eveolve very rapidly as we work on it. You can update to the lastest version using the following commands from your `eicSimUCR/` directory:
+- It is expected that the setup or packages will evolve very rapidly as we work on it. You can update to the lastest version using the following commands from your `eicSimUCR/` directory:
 
 ```
 git pull

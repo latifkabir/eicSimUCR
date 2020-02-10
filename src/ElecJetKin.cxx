@@ -32,7 +32,7 @@ using namespace Pythia8;
 int ElecJetKin()
 {
     int nEvent    = 1000;
-    int    power   = -1;     // -1 = anti-kT; 0 = C/A; 1 = kT.
+    int    power   = -1;     // -1 = anti-kT; 0 = C/A; 1 = kT. //Currently set to anti-kT (hard-coded)
     double R       = 0.7;    // Jet size.
     double pTMin   = 1.0;    // Min jet pT.
     double etaMax  = 5.0;    // Pseudorapidity range of detector.
