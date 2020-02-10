@@ -10,20 +10,16 @@
 #include "eicsmear/erhic/EventPythia.h"
 
 #include "Pythia8Plugins/FastJet3.h"
-#include "fastjetbase.h"
 #include "Pythia8/Pythia.h"
 #include "Pythia8/Event.h"
 #include "Pythia8/Basics.h"
 using namespace Pythia8;
 
-#include "fastjet/JetDefinition.hh"
-#include "fastjet/PseudoJet.hh"
-#include "fastjet/ClusterSequence.hh"
 
 #include <cmath>
 #include <vector>
 
-int ExampleMCevents()
+int ExampleMcEvents()
 {
     int nEvent    = 1000;
     int    power   = -1;     // -1 = anti-kT; 0 = C/A; 1 = kT. //Currently set to anti-kT (hard-coded)
