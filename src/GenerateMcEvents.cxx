@@ -8,6 +8,8 @@
 #include "TMath.h"
 
 #include "eicsmear/erhic/EventPythia.h"
+#include "eicsmear/erhic/ParticleMC.h"
+#include "eicsmear/erhic/EventMC.h"
 
 #include "Pythia8Plugins/FastJet3.h"
 #include "Pythia8/Pythia.h"
@@ -19,11 +21,9 @@ using namespace Pythia8;
 #include <cmath>
 #include <vector>
 
-int ExampleMcEvents()
+int GenerateMcEvents()
 {
-    int nEvent    = 1000;
-    int    power   = -1;     // -1 = anti-kT; 0 = C/A; 1 = kT. //Currently set to anti-kT (hard-coded)
-    double R       = 0.7;    // Jet size.
+    int nEvent    = 100;
     double pTMin   = 1.0;    // Min jet pT.
     double etaMax  = 5.0;    // Pseudorapidity range of detector.
 
@@ -34,8 +34,10 @@ int ExampleMcEvents()
     // Generator. Shorthand for event.
     Pythia pythia;
 
-    Event *event = &pythia.event;
+    Event& event = pythia.event;
+    //Event *event = &pythia.event;
     erhic::EventPythia* erhic_event = new erhic::EventPythia();
+    erhic::ParticleMC *particle = new erhic::ParticleMC();
     
     // Set up incoming beams, for frame with unequal beam energies.
     pythia.readString("Beams:frameType = 2");
@@ -69,20 +71,35 @@ int ExampleMcEvents()
     pythia.init();
   
     // Set up the ROOT TFile and TTree.
-    TFile *file = new TFile("pytree.root","recreate");
+    TFile *file = new TFile("UnsmearedTree.root","recreate");
     TTree *T = new TTree("EICTree","jet Tree");
   
-    //T->Branch("ntrials", &ntrials, "ntrials/I");
-    //T->Branch("event", &event, 16000, 99);
     T->Branch("event", &erhic_event, 256000, 99);
-    
+
+    int nTracks = 0;
     // Begin event loop. Generate event. Skip if error.
     for (int iEvent = 0; iEvent < nEvent; ++iEvent)
     {
+	nTracks = 0;
 	if (!pythia.next()) continue;
 
-	// erhic_event->SetTargetPartonX(1);
-	// erhic_event->SetBeamPartonX(1);
+	for (int i = 0; i < event.size(); ++i) if (event[i].isFinal())
+	{
+	    particle->SetTheta(event[i].theta());
+	    particle->SetPhi(event[i].phi());
+	    particle->SetPt(event[i].pT());
+	    particle->SetP(sqrt(event[i].px()*event[i].px() + event[i].py()*event[i].py() + event[i].pz()*event[i].pz()));
+	    particle->SetPz(event[i].p().pz());
+	    particle->SetE(event[i].e());
+	    particle->SetM(event[i].m());
+	    ++nTracks;
+	    /*
+	      ----------> Set Other properties in the same way here
+	    */
+	    
+	    erhic_event->AddLast(particle);
+	}
+	erhic_event->SetNTracks(nTracks);
 	
 	T->Fill(); //fill ttree
     }  // End of event loop.

@@ -8,6 +8,7 @@
 #pragma link C++ function ElecJetKin;                    // Generate e and Jet Kinematics using FastJet and Pythia8 
 #pragma link C++ function MakeHepMc;                     // Generate HepMC file from Pythia 8   
 #pragma link C++ function BuildBeAST;                    // Build BeAST detector to be used for smearing
-#pragma link C++ function ExampleMcEvents;               // Example MC Events
+#pragma link C++ function GenerateMcEvents;              // Generate Pythia 8 MC Events which are compatible with EIC-Smear
+#pragma link C++ function RunSmearing;                   // Run EIC-Smearing for a specific detector specification
 
 #endif
