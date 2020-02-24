@@ -4,4 +4,4 @@
 // Created: Sat Feb  8 22:18:00 2020 (-0500)
 // URL: jlab.org/~latif
 
-int GenerateMcEvents();
+int GenerateMcEvents(int nevents = 10000);

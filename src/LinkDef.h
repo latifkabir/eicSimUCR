@@ -11,5 +11,6 @@
 #pragma link C++ function BuildBeAST;                    // Build BeAST detector to be used for smearing
 #pragma link C++ function GenerateMcEvents;              // Generate Pythia 8 MC Events which are compatible with EIC-Smear
 #pragma link C++ function RunSmearing;                   // Run EIC-Smearing for a specific detector specification
+#pragma link C++ function Pythia8ToLund;                 // LUND output from Pythia 8
 
 #endif
