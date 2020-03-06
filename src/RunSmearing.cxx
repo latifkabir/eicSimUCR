@@ -6,17 +6,19 @@
 
 #include "eicsmear/smear/Detector.h"
 #include "eicsmear/smear/functions.h"
+#include "ToyDetector.h"
 #include "BuildBeAST.h"
 #include "GenerateMcEvents.h"
 
 void RunSmearing()
 {
     //Generate Pythia 8 MC events that are compatible as EIC-Smearing input file
-    GenerateMcEvents();
+    GenerateMcEvents(500);
 
     //Build the detector specification
-    Smear::Detector det = BuildBeAST();
+    //Smear::Detector det = BuildBeAST();
+    Smear::Detector det = ToyDetector();
 
     //Smear MC events based on the constructed detector 
-    SmearTree(BuildBeAST(),"UnsmearedTree.root", "SmearedTree.root");   
+    SmearTree(det,"UnsmearedTree.root", "SmearedTree.root");   
 }
