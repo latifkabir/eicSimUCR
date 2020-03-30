@@ -31,7 +31,7 @@ using namespace std;
 
 int Pythia8ToLund()
 {
-    int nEvent    = 100;
+    int nEvent    = 50000;
     double pTMin   = 1.0;    // Min jet pT.
     double etaMax  = 5.0;    // Pseudorapidity range of detector.
 
@@ -143,7 +143,7 @@ int Pythia8ToLund()
     {
 	nTracks = 0;
 	if (!pythia.next()) continue;
-
+	
 	// Four-momenta of proton, electron, virtual photon/Z^0/W^+-.
 	Vec4 pProton = event[1].p();
 	Vec4 peIn    = event[4].p();
@@ -159,7 +159,19 @@ int Pythia8ToLund()
 	truey = y;
 	trueQ2 = Q2;
 	trueW2 = W2;
-	truex = x;
+	truex = x;	
+	trueNu = (W2 + Q2 - pow(pProton.mCalc(), 2.)) / 2. / pProton.mCalc();
+	
+	genevent = 1;
+	subprocess = pythia.info.code();
+	nucleon = 2212;
+	targetparton = pythia.info.id1();
+	xtargparton = pythia.info.x1();
+	beamparton = pythia.info.id2();
+	xbeamparton = pythia.info.x2();
+	s_hat = pythia.info.sHat();
+	t_hat = pythia.info.tHat();
+	u_hat = pythia.info.uHat();
 	
 	nrTracks = event.size();
 	
@@ -168,16 +180,23 @@ int Pythia8ToLund()
 	outFile<<"============================================"<<endl;
 
 	//Order: beam Lepton, Beam Hadron, Scattered Lepton, Exchange Boson
-	outFile<<"\t"<< 1 << "\t" << 21 << "\t" << event[4].id() << "\t" << k3 << "\t" << k4 << "\t" << k5 << "\t" << event[4].px() << "\t" << event[4].py() << "\t" << event[4].pz() << "\t" << event[4].e() << "\t" << event[4].m() << "\t" << event[4].xProd() << "\t" << event[4].yProd() << "\t" << event[4].zProd() << endl;
+	outFile<<"\t"<< 1 << "\t" << 1 << "\t" << event[4].id() << "\t" << k3 << "\t" << k4 << "\t" << k5 << "\t" << event[4].px() << "\t" << event[4].py() << "\t" << event[4].pz() << "\t" << event[4].e() << "\t" << event[4].m() << "\t" << event[4].xProd() << "\t" << event[4].yProd() << "\t" << event[4].zProd() << endl;
 	outFile<<"\t"<< 2 << "\t" << 21 << "\t" << event[1].id() << "\t" << k3 << "\t" << k4 << "\t" << k5 << "\t" << event[1].px() << "\t" << event[1].py() << "\t" << event[1].pz() << "\t" << event[1].e() << "\t" << event[1].m() << "\t" << event[1].xProd() << "\t" << event[1].yProd() << "\t" << event[1].zProd() << endl;
-	outFile<<"\t"<< 3 << "\t" << 21 << "\t" << event[6].id() << "\t" << k3 << "\t" << k4 << "\t" << k5 << "\t" << event[6].px() << "\t" << event[6].py() << "\t" << event[6].pz() << "\t" << event[6].e() << "\t" << event[6].m() << "\t" << event[6].xProd() << "\t" << event[6].yProd() << "\t" << event[6].zProd() << endl;
-	outFile<<"\t"<< 4 << "\t" << 21 << "\t" << 22 << "\t" << k3 << "\t" << k4 << "\t" << k5 << "\t" << pPhoton.px() << "\t" << pPhoton.py() << "\t" << pPhoton.pz() << "\t" << pPhoton.e() << "\t" << pPhoton.mCalc() << "\t" << 0 << "\t" << 0 << "\t" << 0 << endl;
+	outFile<<"\t"<< 3 << "\t" << 1 << "\t" << event[6].id() << "\t" << k3 << "\t" << k4 << "\t" << k5 << "\t" << event[6].px() << "\t" << event[6].py() << "\t" << event[6].pz() << "\t" << event[6].e() << "\t" << event[6].m() << "\t" << event[6].xProd() << "\t" << event[6].yProd() << "\t" << event[6].zProd() << endl;
+	outFile<<"\t"<< 4 << "\t" << 1 << "\t" << 22 << "\t" << k3 << "\t" << k4 << "\t" << k5 << "\t" << pPhoton.px() << "\t" << pPhoton.py() << "\t" << pPhoton.pz() << "\t" << pPhoton.e() << "\t" << pPhoton.mCalc() << "\t" << 0 << "\t" << 0 << "\t" << 0 << endl;
 	    
 	for (int i = 0; i < event.size(); ++i)
 	{
 	    if(i  == 4 || i == 6 || i == 1)
 		continue;
-	    k1 = 21;//event[i].statusAbs();
+
+	    if(event[i].status() > 0)
+		k1 = 1;
+	    else
+		k1 = 11;
+	    if(i < 10)
+		k1 = 21;//event[i].statusAbs();
+	    
 	    k2 = event[i].id();
 	    k3 = event[i].mother1();
 	    k4 = event[i].daughter1();

@@ -13,11 +13,20 @@
 #include "eicsmear/erhic/ParticleMC.h"
 #include "eicsmear/erhic/EventMC.h"
 
+//---
+#include "eicsmear/erhic/EventMCFilterABC.h"
+#include "eicsmear/erhic/EventPythia.h"
+#include "eicsmear/erhic/Kinematics.h"
+#include "eicsmear/erhic/ParticleMC.h"
+#include "eicsmear/erhic/Pythia6EventBuilder.h"
+//---
+
 #include "Pythia8Plugins/FastJet3.h"
 #include "Pythia8/Pythia.h"
 #include "Pythia8/Event.h"
 #include "Pythia8/Basics.h"
 using namespace Pythia8;
+using namespace erhic;
 
 
 #include <cmath>
@@ -85,20 +94,32 @@ int GenerateMcEvents(int nevents)
 	double x     = Q2 / (2. * pProton * pPhoton);
 	double y     = (pProton * pPhoton) / (pProton * peIn);
 
-	erhic_event->SetGenEvent(1);
-	erhic_event->SetNucleon(2212);
-	erhic_event->SetBeamParton(21); //<--- Check ?
-	erhic_event->SetTargetParton(21); //<--- Check ?
+	erhic_event->SetGenEvent(1);  //
+	erhic_event->SetNucleon(2212); //2212
+	erhic_event->SetBeamParton(pythia.info.id1()); //<--- Check ? 21
+	erhic_event->SetTargetParton(pythia.info.id2()); //<--- Check   21
+	erhic_event->SetBeamPartonX(pythia.info.x1());
+	erhic_event->SetTargetPartonX(pythia.info.x2());
+
+	
 	erhic_event->SetTrueQ2(Q2);
 	erhic_event->SetTrueW2(W2);
 	erhic_event->SetTrueX(x);
 	erhic_event->SetTrueY(y);
-	//erhic_event->SetTrueNu();
+	erhic_event->SetTrueNu((W2 + Q2 - pow(pProton.mCalc(), 2.)) / 2. / pProton.mCalc());
+
+	erhic_event->SetHardS(pythia.info.sHat());
+	erhic_event->SetHardT(pythia.info.tHat());
+	erhic_event->SetHardU(pythia.info.uHat());
+	//erhic_event->SetHardQ2(pythia->GetPARI(22));
+	//erhic_event->SetHardPt2(pythia.info.pTHat());
+	erhic_event->SetProcess(pythia.info.code());
 	
-	erhic_event->SetELeptonInNuclearFrame(peIn.e());
-	erhic_event->SetEScatteredInNuclearFrame(peOut.e());
-	
-	for (int i = 0; i < event.size(); ++i) if (event[i].isFinal())
+	// erhic_event->SetELeptonInNuclearFrame(peIn.e());
+	// erhic_event->SetEScatteredInNuclearFrame(peOut.e());
+
+	bool flag = true;	
+	for (int i = 0; i < event.size(); ++i) //if (event[i].isFinal())
 	{
 	    particle->SetStatus(event[i].statusAbs());
 	    particle->SetId(event[i].id());
@@ -129,6 +150,48 @@ int GenerateMcEvents(int nevents)
 	    erhic_event->AddLast(particle);
 	}
 	erhic_event->SetNTracks(nTracks);
+
+	//<--------------
+       		
+	// Compute derived erhic_event kinematics
+	DisKinematics* nm = LeptonKinematicsComputer(*erhic_event).Calculate();
+	DisKinematics* jb = JacquetBlondelComputer(*erhic_event).Calculate();
+	DisKinematics* da = DoubleAngleComputer(*erhic_event).Calculate();
+	if (nm)
+	{
+	    erhic_event->SetLeptonKinematics(*nm);
+	}  // if
+	if (jb)
+	{
+	    erhic_event->SetJacquetBlondelKinematics(*jb);
+	}  // if
+	if (da)
+	{
+	    erhic_event->SetDoubleAngleKinematics(*da);
+	}  // if
+	// We also have to set the remaining variables not taken care of
+	// by the general DIS erhic_event kinematic computations.
+	// Find the beams, exchange boson, scattered lepton.
+        BeamParticles beams;
+	if (ParticleIdentifier::IdentifyBeams(*erhic_event, beams))
+	{
+	    const TLorentzVector h = beams.BeamHadron();
+	    TLorentzVector l = beams.BeamLepton();
+	    TLorentzVector s = beams.ScatteredLepton();
+	    TVector3 boost = -h.BoostVector();
+	    l.Boost(boost);
+	    s.Boost(boost);
+	    erhic_event->SetELeptonInNuclearFrame(l.E());
+	    erhic_event->SetEScatteredInNuclearFrame(s.E());
+	}  // if
+	for (unsigned i(0); i < erhic_event->GetNTracks(); ++i)
+	{
+	    erhic_event->GetTrack(i)->ComputeEventDependentQuantities(*erhic_event);
+	}  // for
+
+	//<--------------
+  
+
 	
 	T->Fill(); //fill ttree
     }  // End of event loop.
