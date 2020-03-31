@@ -1,0 +1,10 @@
+#!/bin/csh
+
+if ($# != 1) then
+   echo "syntax: $0 <config-file>"
+   exit
+endif
+
+source /afs/rhic.bnl.gov/eic/etc/eic_cshrc
+$UCR_SIM_HOME/bin/pythiaeRHIC < $1
+    

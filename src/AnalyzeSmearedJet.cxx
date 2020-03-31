@@ -32,14 +32,20 @@ void AnalyzeSmearedJet()
     TH1D* hN_s = new TH1D("hN_s", "Smeared Jet no.", 100, 0.0, 0.0);
     TH1D* hPhi_u = new TH1D("hPhi_u", "Unsmeared Jet Phi", 100, 0.0, 0.0);
     TH1D* hPhi_s = new TH1D("hPhi_s", "Smeared Jet Phi", 100, 0.0, 0.0);
-    TH1D* hEta_u = new TH1D("hEta_u", "Unsmeared Jet Eta", 100, 0.0, 0.0);
-    TH1D* hEta_s = new TH1D("hEta_s", "Smeared Jet Eta", 100, 0.0, 0.0);
+    TH1D* hEta_u = new TH1D("hEta_u", "Unsmeared Jet Eta", 100, -10.0, 10.0);
+    TH1D* hEta_s = new TH1D("hEta_s", "Smeared Jet Eta", 100, -10.0, 10.0);
     TH1D* hPt_u = new TH1D("hPt_u", "Unsmeared Jet Pt", 100, 0.0, 0.0);
     TH1D* hPt_s = new TH1D("hPt_s", "Smeared Jet Pt", 100, 0.0, 0.0);
     TH1D* hE_u = new TH1D("hE_u", "Unsmeared Jet E", 100, 0.0, 0.0);
     TH1D* hE_s = new TH1D("hE_s", "Smeared Jet E", 100, 0.0, 0.0);
     TH1D* hP_u = new TH1D("hP_u", "Unsmeared Jet P", 100, 0.0, 0.0);
     TH1D* hP_s = new TH1D("hP_s", "Smeared Jet P", 100, 0.0, 0.0);
+    TH1D* hPx_u = new TH1D("hPx_u", "Unsmeared Jet Px", 100, 0.0, 0.0);
+    TH1D* hPx_s = new TH1D("hPx_s", "Smeared Jet Px", 100, 0.0, 0.0);
+    TH1D* hPy_u = new TH1D("hPy_u", "Unsmeared Jet Py", 100, 0.0, 0.0);
+    TH1D* hPy_s = new TH1D("hPy_s", "Smeared Jet Py", 100, 0.0, 0.0);
+    TH1D* hPz_u = new TH1D("hPz_u", "Unsmeared Jet Pz", 100, 0.0, 0.0);
+    TH1D* hPz_s = new TH1D("hPz_s", "Smeared Jet Pz", 100, 0.0, 0.0);
     
     TFile *fUnsmrd = new TFile("pythia6.ep.unsmeared.root"); //Unsmeared
     TFile *fSmrd = new TFile("pythia6.ep.smeared.root");     //smeared
@@ -77,14 +83,14 @@ void AnalyzeSmearedJet()
 	    part_u = unsmrd_event->GetTrack(i);
 	    part_s = smrd_event->GetTrack(i);
 
-	    //skip scattered electron here
+	    //skip beam particles (electron/proton)
+	    if(part_u->GetIndex() == 1 ||  part_u->GetIndex() == 2)
+		continue;
 	    
 	    jPart_u.push_back(PseudoJet(part_u->GetPx(), part_u->GetPy(), part_u->GetPz(), part_u->GetE()));
 	    
 	    if(part_s)
-	    {
 		jPart_s.push_back(PseudoJet(part_s->GetPx(), part_s->GetPy(), part_s->GetPz(), part_s->GetE()));
-	    }
 	}
 
 	ClusterSequence cs_u(jPart_u,jet_def_u);
@@ -100,7 +106,12 @@ void AnalyzeSmearedJet()
 	    hEta_u->Fill(jets_u[i].eta());   
 	    hPt_u->Fill(jets_u[i].pt());   
 	    hE_u->Fill(jets_u[i].e());   
-	    hP_u->Fill(sqrt(pow(jets_u[i].px(),2) + pow(jets_u[i].py(), 2) + pow(jets_u[i].pz(),2)));   
+	    hP_u->Fill(sqrt(pow(jets_u[i].px(),2) + pow(jets_u[i].py(), 2) + pow(jets_u[i].pz(),2)));
+	    hPx_u->Fill(jets_u[i].px());   
+	    hPy_u->Fill(jets_u[i].py());   
+	    hPz_u->Fill(jets_u[i].pz());
+
+	    //loop here to access constituent's info
 	}
 
 	hN_s->Fill(jets_s.size());
@@ -110,7 +121,12 @@ void AnalyzeSmearedJet()
 	    hEta_s->Fill(jets_s[i].eta());   
 	    hPt_s->Fill(jets_s[i].pt());   
 	    hE_s->Fill(jets_s[i].e());   
-	    hP_s->Fill(sqrt(pow(jets_s[i].px(),2) + pow(jets_s[i].py(), 2) + pow(jets_s[i].pz(),2)));      
+	    hP_s->Fill(sqrt(pow(jets_s[i].px(),2) + pow(jets_s[i].py(), 2) + pow(jets_s[i].pz(),2)));
+	    hPx_s->Fill(jets_s[i].px());   
+	    hPy_s->Fill(jets_s[i].py());   
+	    hPz_s->Fill(jets_s[i].pz());
+
+	    //loop here to access constituent's info
 	}	
     }
 

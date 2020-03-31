@@ -30,6 +30,13 @@ Currently, the following packages are included:
 
 On RCF, these packages are installed at `/gpfs/mnt/gpfs01/star/pwg/kabir/eSimUCR/`.
 
+The following packages are linked from other (e.g. RCF) installations:
+
+- `Pythia 6.4`
+- `Fun4All`
+- `JLEIC Geant4 Simulation` (Through Docker image)
+
+
 3.Compilation and Execution
 ------------------------
 - To compile use

@@ -25,6 +25,12 @@ else
     setenv LD_LIBRARY_PATH "${EIC_SIM_UCR}/pythia8/lib:${EIC_SIM_UCR}/eSimUCR/fastjet/lib:${EIC_SIM_UCR}/eic-smear/build/lib:${EIC_SIM_UCR}/HepMC2/lib:${UCR_SIM_HOME}/lib/:${LD_LIBRARY_PATH}"
 endif
 
+if (!($?PATH)) then
+    setenv PATH "${UCR_SIM_HOME}/bin/"
+else 
+    setenv PATH "${UCR_SIM_HOME}/bin/:${PATH}"
+endif
+    
 setenv PYTHIA8 "${EIC_SIM_UCR}/pythia8/"
 setenv PYTHIA8DATA "${EIC_SIM_UCR}/pythia8/share/Pythia8/xmldoc/"
 

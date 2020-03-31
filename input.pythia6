@@ -1,11 +1,11 @@
-pythia.ep.27x1.5Mevents.1.RadCor=0.txt ! output file name
+pythia6.ep.unsmeared.txt ! output file name
 11                ! Initialize Pythia in collider mode 11 in fix target mode 10
 11                ! lepton beam type
-10.0, 27.5       ! proton and electron beam energy
-1000, 1000       ! Number of events 
+100.0, 18.0       ! proton and electron beam energy
+100000, 100       ! Number of events 
 1e-09, 0.99       ! xmin and xmax
 1e-09,1.00        ! ymin and ymax 
-0.9, 100000      ! Q2min and Q2max 
+100.0, 100000      ! Q2min and Q2max 
 F2PY,1998         ! F2-Model, R-Parametrisation
 0                 ! switch for rad corrections; 0:no, 1:yes, 2:gen.lookup table 
 0                 ! Pythia-Model = 0 standard GVMD generation in Pythia-x and Q2; = 1 GVMD model with generation in y and Q2 as for radgen
