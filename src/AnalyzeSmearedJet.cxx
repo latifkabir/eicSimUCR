@@ -26,15 +26,15 @@
 using namespace fastjet;
 using namespace std;
 
-void AnalyzeSmearedJet(TString inFile, TString outFile)
+void AnalyzeSmearedJet(TString inFileUnsmeared, TString inFileSmeared,TString outFile)
 {
-    if(gSystem->AccessPathName(inFile))
+    if(gSystem->AccessPathName(inFileUnsmeared) || gSystem->AccessPathName(inFileSmeared))
     {
-	cout << "Input file NOT found: "<<inFile<<endl;
+	cout << "Input file NOT found "<<endl;
 	return;
     }
     
-    TFile *fOut = new TFile("JetAnaOut.root", "recreate");
+    TFile *fOut = new TFile(outFile, "recreate");
     TH1D* hN_u = new TH1D("hN_u", "Unsmeared Jet no.", 100, 0.0, 0.0);
     TH1D* hN_s = new TH1D("hN_s", "Smeared Jet no.", 100, 0.0, 0.0);
     TH1D* hPhi_u = new TH1D("hPhi_u", "Unsmeared Jet Phi", 100, 0.0, 0.0);
@@ -54,8 +54,8 @@ void AnalyzeSmearedJet(TString inFile, TString outFile)
     TH1D* hPz_u = new TH1D("hPz_u", "Unsmeared Jet Pz", 100, 0.0, 0.0);
     TH1D* hPz_s = new TH1D("hPz_s", "Smeared Jet Pz", 100, 0.0, 0.0);
     
-    TFile *fUnsmrd = new TFile(inFile); //Unsmeared
-    TFile *fSmrd = new TFile(outFile);     //smeared
+    TFile *fUnsmrd = new TFile(inFileUnsmeared); //Unsmeared
+    TFile *fSmrd = new TFile(inFileSmeared);     //smeared
     
     Smear::Event *smrd_event = new Smear::Event();
     erhic::EventPythia *unsmrd_event = new erhic::EventPythia();
