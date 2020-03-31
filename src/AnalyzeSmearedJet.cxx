@@ -11,6 +11,7 @@
 #include "TFile.h"
 #include "TMath.h"
 #include "TH1D.h"
+#include "TSystem.h"
 
 #include "eicsmear/erhic/EventPythia.h"
 #include "eicsmear/erhic/ParticleMC.h"
@@ -25,8 +26,14 @@
 using namespace fastjet;
 using namespace std;
 
-void AnalyzeSmearedJet()
+void AnalyzeSmearedJet(TString inFile, TString outFile)
 {
+    if(gSystem->AccessPathName(inFile))
+    {
+	cout << "Input file NOT found: "<<inFile<<endl;
+	return;
+    }
+    
     TFile *fOut = new TFile("JetAnaOut.root", "recreate");
     TH1D* hN_u = new TH1D("hN_u", "Unsmeared Jet no.", 100, 0.0, 0.0);
     TH1D* hN_s = new TH1D("hN_s", "Smeared Jet no.", 100, 0.0, 0.0);
@@ -47,8 +54,8 @@ void AnalyzeSmearedJet()
     TH1D* hPz_u = new TH1D("hPz_u", "Unsmeared Jet Pz", 100, 0.0, 0.0);
     TH1D* hPz_s = new TH1D("hPz_s", "Smeared Jet Pz", 100, 0.0, 0.0);
     
-    TFile *fUnsmrd = new TFile("pythia6.ep.unsmeared.root"); //Unsmeared
-    TFile *fSmrd = new TFile("pythia6.ep.smeared.root");     //smeared
+    TFile *fUnsmrd = new TFile(inFile); //Unsmeared
+    TFile *fSmrd = new TFile(outFile);     //smeared
     
     Smear::Event *smrd_event = new Smear::Event();
     erhic::EventPythia *unsmrd_event = new erhic::EventPythia();

@@ -4,4 +4,4 @@
 // Created: Sun Mar 29 17:44:22 2020 (-0400)
 // URL: jlab.org/~latif
 
-void AnalyzeSmearedJet();
+void AnalyzeSmearedJet(TString inFile = "pythia6.ep.unsmeared.root", TString outFile = "pythia6.ep.smeared.root");

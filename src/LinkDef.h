@@ -19,3 +19,10 @@
 
 
 #endif
+
+/*
+eic-smear functions:
+
+BuildTree : Build root file from txt LUND file
+SmearTree: Smear root file using eic-smear
+*/
