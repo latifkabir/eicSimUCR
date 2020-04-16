@@ -83,7 +83,6 @@ make
 - Source environment unless already done: `source setup.csh`
 - `cd` to your `Delphes` directory: `cd Delphes/`
 - Run the EIC example: `./DelphesPythia8 cards/delphes_card_EIC.tcl examples/Pythia8/DIS.cmnd out.root`
-
-Note: RCF does not have `OpenGL`, so you will not be able to run `EventDisplay`.
+- Run Event Dsiplay (From Delphes32Bit with ROOT 5): `root -l examples/EventDisplay.C'("cards/delphes_card_EIC.tcl","out.root")' `
 
 
