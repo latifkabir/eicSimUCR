@@ -5,9 +5,14 @@
 #pragma link off all functions;
 
 #pragma link C++ function help;                          // Print all functions implemented
-#pragma link C++ function BasicDIS;                      // Generate basic ep DIS events using Pythia8
-#pragma link C++ function FastJetEx;                     // Basic FastJet Example
-#pragma link C++ function ElecJetKin;                    // Generate e and Jet Kinematics using FastJet and Pythia8 
+#pragma link C++ function EsimBasicDIS;                  // Generate basic ep DIS events using Pythia8
+#pragma link C++ function EsimFastJetEx;                 // Basic FastJet Example
+#pragma link C++ function EsimElecJetKin;                // Generate e and Jet Kinematics using FastJet and Pythia8 
+#pragma link C++ function EsimReadDelphes;               // Read Delphes output file
+#pragma link C++ function EsimAnalyzeDiffJet;            // Analyze Diffractive jet from Delphes
+
+
+//-------- Eic Smear ----------------------
 #pragma link C++ function MakeHepMc;                     // Generate HepMC file from Pythia 8   
 #pragma link C++ function ToyDetector;                   // Simple / Toy detector for benchmarking
 #pragma link C++ function BuildBeAST;                    // Build BeAST detector to be used for smearing

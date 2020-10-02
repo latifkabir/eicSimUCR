@@ -7,4 +7,4 @@
 // Modified by Rene Brun and Axel Naumann to put the Pythia::event
 // into a TTree.
 
-int ElecJetKin();
+int EsimElecJetKin();

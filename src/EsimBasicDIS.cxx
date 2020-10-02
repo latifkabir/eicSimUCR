@@ -14,7 +14,7 @@
 #include "Pythia8/Basics.h"
 using namespace Pythia8;
 
-int BasicDIS(int nEvents)
+int EsimBasicDIS(int nEvents)
 {
   // Beam energies, minimal Q2, number of events to generate.
   double eProton   = 920.;
@@ -59,7 +59,7 @@ int BasicDIS(int nEvents)
 
   //Histograms.
   double Wmax = sqrt(4.* eProton * eElectron);
-  TFile *file = new TFile("BasicDIS.root", "RECREATE");
+  TFile *file = new TFile("EsimBasicDIS.root", "RECREATE");
   TH1D *Qhist = new TH1D("Q", "Q [GeV]", 100, 0., 50.);
   TH1D *Whist = new TH1D("W", "W [GeV]", 100, 0., Wmax);
   TH1D *xhist = new TH1D("x", "x", 100, 0., 1.);

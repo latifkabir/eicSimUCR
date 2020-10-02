@@ -31,7 +31,7 @@ using namespace Pythia8;
 #include <cmath>
 #include <vector>
 
-int ElecJetKin()
+int EsimElecJetKin()
 {
     int nEvent    = 9e4;
     int    power   = -1;     // -1 = anti-kT; 0 = C/A; 1 = kT.

@@ -20,9 +20,9 @@ setenv UCR_SIM_HOME "$UCR_SIM_HOME"
 setenv EIC_SIM_UCR "/gpfs/mnt/gpfs01/star/pwg/kabir/eSimUCR/"
 
 if (!($?LD_LIBRARY_PATH)) then
-    setenv LD_LIBRARY_PATH "${EIC_SIM_UCR}/pythia8/lib:${EIC_SIM_UCR}/eSimUCR/fastjet/lib:${EIC_SIM_UCR}/eic-smear/build/lib:${EIC_SIM_UCR}/HepMC2/lib:${UCR_SIM_HOME}/lib/"
+    setenv LD_LIBRARY_PATH "${EIC_SIM_UCR}/pythia8/lib:${EIC_SIM_UCR}/eSimUCR/fastjet/lib:${EIC_SIM_UCR}/eic-smear/build/lib:${EIC_SIM_UCR}/HepMC2/lib:${UCR_SIM_HOME}/lib/:${EIC_SIM_UCR}/Delphes"
 else 
-    setenv LD_LIBRARY_PATH "${EIC_SIM_UCR}/pythia8/lib:${EIC_SIM_UCR}/eSimUCR/fastjet/lib:${EIC_SIM_UCR}/eic-smear/build/lib:${EIC_SIM_UCR}/HepMC2/lib:${UCR_SIM_HOME}/lib/:${LD_LIBRARY_PATH}"
+    setenv LD_LIBRARY_PATH "${EIC_SIM_UCR}/pythia8/lib:${EIC_SIM_UCR}/eSimUCR/fastjet/lib:${EIC_SIM_UCR}/eic-smear/build/lib:${EIC_SIM_UCR}/HepMC2/lib:${UCR_SIM_HOME}/lib/:${LD_LIBRARY_PATH}:${EIC_SIM_UCR}/Delphes"
 endif
 
 if (!($?PATH)) then
@@ -40,4 +40,4 @@ if (-f ${EIC_SIM_UCR}/root6/bin/thisroot.csh) then
 endif
 
 
-setenv ROOT_INCLUDE_PATH "${EIC_SIM_UCR}/eic-smear/include/:${EIC_SIM_UCR}/HepMC2/include/HepMC/"
+setenv ROOT_INCLUDE_PATH "${EIC_SIM_UCR}/eic-smear/include/:${EIC_SIM_UCR}/HepMC2/include/HepMC/:$EIC_SIM_UCR/Delphes/external/"

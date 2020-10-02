@@ -1,4 +1,4 @@
-// Filename: FastJetEx.cxx
+// Filename: EsimFastJetEx.cxx
 // Description: 
 // Author: Latif Kabir < kabir@bnl.gov >
 // Created: Sun Mar 29 22:45:57 2020 (-0400)
@@ -13,7 +13,7 @@ This is very basic example that shows different components of FastJet.
 #include <iostream>
 using namespace fastjet;
 using namespace std;
-void FastJetEx()
+void EsimFastJetEx()
 {
     vector<PseudoJet>particles;
     // an event with three particles:   px    py  pz      E
