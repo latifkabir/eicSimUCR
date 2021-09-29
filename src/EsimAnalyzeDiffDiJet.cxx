@@ -13,11 +13,11 @@
 using namespace std;
 
 //------------------------------------------------------------------------------
-void EsimAnalyzeDiffJet(const char *inputFile)
+void EsimAnalyzeDiffDiJet(const char *inputFile)
 {
     gSystem->Load("libDelphes");
 
-    TFile *file = new TFile("DiffJetAna.root", "recreate");
+    TFile *file = new TFile("DiffDiJetAna.root", "recreate");
     
     // Create chain of root trees
     TChain chain("Delphes");
@@ -34,6 +34,7 @@ void EsimAnalyzeDiffJet(const char *inputFile)
     TClonesArray *brTrack = treeReader->UseBranch("Track");
     TClonesArray *brParticle = treeReader->UseBranch("Particle");
     TClonesArray *brTower = treeReader->UseBranch("Tower");
+    //TClonesArray *brProton = treeReader->UseBranch("Proton");
 
     TClonesArray *brGenJet = treeReader->UseBranch("GenJet");
     
@@ -56,11 +57,16 @@ void EsimAnalyzeDiffJet(const char *inputFile)
     TH2D *histGenVsRecPy = new TH2D("histGenVsRecPy", "Gen Vs Rec Jet Py; Generated Jet Py [GeV/c]; Reconstructed Jet Py [GeV/c]", 20, -10, 10, 20, -10, 10);
     TH2D *histGenVsRecPz = new TH2D("histGenVsRecPz", "Gen Vs Rec Jet Pz; Generated Jet Pz [GeV/c]; Reconstructed Jet Pz [GeV/c]", 20, -10, 10, 20, -10, 10);
     TH2D *histGenVsRecE = new TH2D("histGenVsRecE", "Gen Vs Rec Jet E; Generated Jet E [GeV]; Reconstructed Jet E [GeV]", 50, 0, 100, 50, 0, 100);
+    TH2D *histGenVsRecdPhi = new TH2D("histGenVsRecdPhi", "Gen Vs Rec Jet #Delta #phi; Generated Jet #Delta #phi[rad]; Reconstructed Jet #Delta #phi [rad]", 100, -3.2, 3.2, 100, -3.2, 3.2);
+
+    TH2D *histJ2EtaVsJet1Eta = new TH2D("histJ2EtaVsJet1Eta", "Jet1 Eta vs Jet2 Eta; Jet1 #eta; Jet2 #eta", 100, -2, 4.5, 100, -2, 4.5);
+    TH2D *histJ2PhiVsJet1Phi = new TH2D("histJ2PhiVsJet1Phi", "Jet1 Phi vs Jet2 Phi; Jet1 #phi; Jet2 #phi", 100, -3.2, 3.2, 100, -3.2, 3.2);
     
     Event *event;
     Jet *jet;
     Track *track;
     Tower *tower;
+    //Proton *proton;
 
     GenParticle *genParticle;
     Jet *genJet;
@@ -68,6 +74,20 @@ void EsimAnalyzeDiffJet(const char *inputFile)
     Bool_t hasTrackActivity = kFALSE;
     Bool_t hasTowerActivity = kFALSE;
     Int_t eventNumber;
+
+    Double_t gJet1E;
+    Double_t gJet2E;
+    Double_t rJet1E;
+    Double_t rJet2E;
+
+    Double_t rJet1Eta;
+    Double_t rJet2Eta;
+
+    Double_t rJet1Phi;
+    Double_t rJet2Phi;
+
+    Double_t gJet1Phi;
+    Double_t gJet2Phi;
     
     // Loop over all events
     for(Int_t entry = 0; entry < numberOfEntries; ++entry)
@@ -111,11 +131,19 @@ void EsimAnalyzeDiffJet(const char *inputFile)
 	    histParticleEta->Fill(genParticle->Eta);
 	}
 
-	if(hasTrackActivity || hasTowerActivity)
-	    continue;
+	// if(hasTrackActivity || hasTowerActivity)
+	//     continue;
 
 	//cout << "Event Number: "<< eventNumber <<endl;
 
+	if(brJet->GetEntriesFast() != 2)
+	    continue;
+
+	// for(Int_t i = 0; i < brProton->GetEntriesFast(); ++i)
+	// {	    
+	//     proton = (Proton*) brProton->At(i);
+	// }
+	
 	for(Int_t i = 0; i < brJet->GetEntriesFast(); ++i)
 	{	    
 	    jet = (Jet*) brJet->At(i);
@@ -130,17 +158,38 @@ void EsimAnalyzeDiffJet(const char *inputFile)
 
 	histGenVsRecJets->Fill(brGenJet->GetEntriesFast(), brJet->GetEntriesFast());
 
-	if(brGenJet->GetEntriesFast() == 1 &&  brJet->GetEntriesFast() == 1)
+	if(brGenJet->GetEntriesFast() == 2 &&  brJet->GetEntriesFast() == 2)
 	{
+	    jet = (Jet*) brJet->At(0);
+	    rJet1E = jet->P4().E();
+	    rJet1Eta = jet->Eta;
+	    rJet1Phi = jet->Phi;
+
+	    jet = (Jet*) brJet->At(1);	    
+	    rJet2E = jet->P4().E();
+	    rJet2Eta = jet->Eta;
+	    rJet2Phi = jet->Phi;
+
+	    gJet1E = ((Jet*) brGenJet->At(0))->P4().E();
+	    gJet2E = ((Jet*) brGenJet->At(1))->P4().E();
+
+	    gJet1Phi = ((Jet*) brGenJet->At(0))->Phi;
+	    gJet2Phi = ((Jet*) brGenJet->At(1))->Phi;
+	    
 	    histGenVsRecPt->Fill(((Jet*) brGenJet->At(0))->PT, ((Jet*) brJet->At(0))->PT);
 	    histGenVsRecPx->Fill(((Jet*) brGenJet->At(0))->P4().Px(), ((Jet*) brJet->At(0))->P4().Px());
 	    histGenVsRecPy->Fill(((Jet*) brGenJet->At(0))->P4().Py(), ((Jet*) brJet->At(0))->P4().Py());
 	    histGenVsRecPz->Fill(((Jet*) brGenJet->At(0))->P4().Pz(), ((Jet*) brJet->At(0))->P4().Pz());
-	    histGenVsRecE->Fill(((Jet*) brGenJet->At(0))->P4().E(), ((Jet*) brJet->At(0))->P4().E());
-	}
-	
+	    
+	    histGenVsRecE->Fill(gJet1E + gJet2E, rJet1E + rJet2E);
+	    histJ2EtaVsJet1Eta->Fill(rJet1Eta, rJet2Eta);
+	    histJ2PhiVsJet1Phi->Fill(rJet1Phi, rJet2Phi);
+
+	    histGenVsRecdPhi->Fill(fabs(rJet1Phi - rJet2Phi), fabs(gJet1Phi - gJet2Phi));	    
+	}	
     }
 
+    histGenVsRecdPhi->Write();
     file->Write();
 }
 

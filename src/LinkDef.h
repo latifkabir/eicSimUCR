@@ -10,6 +10,7 @@
 #pragma link C++ function EsimElecJetKin;                // Generate e and Jet Kinematics using FastJet and Pythia8 
 #pragma link C++ function EsimReadDelphes;               // Read Delphes output file
 #pragma link C++ function EsimAnalyzeDiffJet;            // Analyze Diffractive jet from Delphes
+#pragma link C++ function EsimAnalyzeDiffDiJet;            // Analyze Diffractive dijet from Delphes
 
 
 //-------- Eic Smear ----------------------

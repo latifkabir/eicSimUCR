@@ -47,7 +47,7 @@ make
 - To run the example, Start `root` and call the function `ElecJetKin()` from the `root` prompt:
 ```
 root
-root[0] ElecJetKin()
+root[0] EsimElecJetKin()
 ```
 This should produce an output called `pytree.root` in the current directory. Make plots using the output root file.
 
